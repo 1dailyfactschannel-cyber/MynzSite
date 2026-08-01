@@ -31,11 +31,24 @@ body {
   }
 
   .text-gradient {
-    @apply bg-gradient-to-r from-primary to-emerald-300 bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-primary via-emerald-300 to-primary bg-clip-text text-transparent;
+    background-size: 200% auto;
+    animation: gradient-shift 6s linear infinite;
   }
 
   .btn-primary {
-    @apply inline-flex items-center justify-center gap-2 rounded-glass bg-gradient-to-r from-primary to-primary-dark px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-primary/25 transition hover:brightness-110 focus:outline-none focus:ring-2 focus:ring-primary/60;
+    @apply relative inline-flex items-center justify-center gap-2 overflow-hidden rounded-glass bg-gradient-to-r from-primary to-primary-dark px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-primary/25 transition hover:brightness-110 focus:outline-none focus:ring-2 focus:ring-primary/60;
+  }
+
+  /* Блик, пробегающий по кнопке */
+  .btn-primary::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(105deg, transparent 30%, rgba(255, 255, 255, 0.25) 50%, transparent 70%);
+    transform: translateX(-120%);
+    animation: btn-shine 4s ease-in-out infinite;
+    pointer-events: none;
   }
 
   .glow {
@@ -44,7 +57,148 @@ body {
     background: radial-gradient(circle, rgba(16, 185, 129, 0.18) 0%, transparent 70%);
     filter: blur(40px);
     pointer-events: none;
+    animation: glow-pulse 7s ease-in-out infinite;
   }
+}
+
+@keyframes gradient-shift {
+  to {
+    background-position: 200% center;
+  }
+}
+
+@keyframes btn-shine {
+  0%,
+  55% {
+    transform: translateX(-120%);
+  }
+  85%,
+  100% {
+    transform: translateX(120%);
+  }
+}
+
+@keyframes glow-pulse {
+  0%,
+  100% {
+    opacity: 0.65;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* Появление при скролле (компонент Reveal) */
+.reveal {
+  opacity: 0;
+  transform: translateY(var(--reveal-y, 24px));
+  transition:
+    opacity 0.7s ease,
+    transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.reveal-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Перспективная сетка-пол с бегущими линиями */
+.grid-floor {
+  position: absolute;
+  left: -10%;
+  right: -10%;
+  bottom: 0;
+  height: 45%;
+  background-image:
+    linear-gradient(rgba(16, 185, 129, 0.14) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(16, 185, 129, 0.14) 1px, transparent 1px);
+  background-size: 44px 44px;
+  transform: perspective(420px) rotateX(62deg);
+  transform-origin: bottom;
+  animation: grid-move 1.8s linear infinite;
+  mask-image: linear-gradient(to top, rgba(0, 0, 0, 0.55) 0%, transparent 85%);
+  -webkit-mask-image: linear-gradient(to top, rgba(0, 0, 0, 0.55) 0%, transparent 85%);
+  pointer-events: none;
+}
+
+@keyframes grid-move {
+  to {
+    background-position: 0 44px, 0 0;
+  }
+}
+
+/* 3D-орбиты вокруг логотипа */
+.orbit {
+  position: absolute;
+  border-radius: 9999px;
+  pointer-events: none;
+}
+
+.orbit-ring {
+  inset: -13px;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  transform: rotateX(72deg);
+}
+
+.orbit-ring--outer {
+  inset: -24px;
+  border-color: rgba(16, 185, 129, 0.16);
+  transform: rotateX(72deg) rotateY(18deg);
+}
+
+.orbit-dot {
+  inset: -13px;
+  transform: rotateX(72deg);
+  animation: orbit-spin 6s linear infinite;
+}
+
+.orbit-dot--outer {
+  inset: -24px;
+  transform: rotateX(72deg) rotateY(18deg);
+  animation: orbit-spin-outer 9s linear infinite reverse;
+}
+
+.orbit-dot::before,
+.orbit-dot--outer::before {
+  content: "";
+  position: absolute;
+  top: -3px;
+  left: 50%;
+  width: 6px;
+  height: 6px;
+  border-radius: 9999px;
+  background: #10b981;
+  box-shadow: 0 0 10px 2px rgba(16, 185, 129, 0.8);
+}
+
+.orbit-dot--outer::before {
+  width: 5px;
+  height: 5px;
+  background: #6ee7b7;
+}
+
+@keyframes orbit-spin {
+  from {
+    transform: rotateX(72deg) rotateZ(0deg);
+  }
+  to {
+    transform: rotateX(72deg) rotateZ(360deg);
+  }
+}
+
+@keyframes orbit-spin-outer {
+  from {
+    transform: rotateX(72deg) rotateY(18deg) rotateZ(0deg);
+  }
+  to {
+    transform: rotateX(72deg) rotateY(18deg) rotateZ(360deg);
+  }
+}
+
+/* Слои параллакса */
+[data-depth] {
+  transition: transform 0.35s ease-out;
+  will-change: transform;
 }
 
 /* --- 3D / motion --- */
@@ -102,8 +256,29 @@ body {
 
 @media (prefers-reduced-motion: reduce) {
   .animate-float,
-  .animate-shield {
+  .animate-shield,
+  .text-gradient,
+  .glow,
+  .grid-floor,
+  .orbit-dot,
+  .orbit-dot--outer {
     animation: none;
+  }
+
+  [data-depth] {
+    transform: none !important;
+    transition: none;
+  }
+
+  .btn-primary::after {
+    animation: none;
+    content: none;
+  }
+
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
   }
 
   html {

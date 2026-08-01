@@ -7,6 +7,7 @@ import Extension from "@/components/Extension";
 import Faq from "@/components/Faq";
 import Cta from "@/components/Cta";
 import Footer from "@/components/Footer";
+import Reveal from "@/components/Reveal";
 
 export default function Home() {
   return (
@@ -14,12 +15,24 @@ export default function Home() {
       <Header />
       <main>
         <Hero />
-        <Features />
-        <Security />
-        <Comparison />
-        <Extension />
-        <Faq />
-        <Cta />
+        <Reveal>
+          <Features />
+        </Reveal>
+        <Reveal>
+          <Security />
+        </Reveal>
+        <Reveal>
+          <Comparison />
+        </Reveal>
+        <Reveal>
+          <Extension />
+        </Reveal>
+        <Reveal>
+          <Faq />
+        </Reveal>
+        <Reveal>
+          <Cta />
+        </Reveal>
       </main>
       <Footer />
     </>

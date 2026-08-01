@@ -2,6 +2,7 @@ import Image from "next/image";
 import LeadForm from "./LeadForm";
 import AppMock from "./AppMock";
 import Tilt from "./Tilt";
+import MouseParallax from "./MouseParallax";
 
 const badges = ["100% офлайн", "Без подписки", "Windows"];
 
@@ -13,18 +14,30 @@ const chips = [
 
 export default function Hero() {
   return (
-    <section id="top" className="relative mx-auto max-w-6xl px-5 pb-24 pt-16 md:pt-24">
-      <div className="glow left-1/2 top-0 h-96 w-[42rem] -translate-x-1/2" />
-      <div className="relative grid items-center gap-12 lg:grid-cols-2">
-        <div>
-          <div className="mb-6 flex items-center gap-4">
-            <Image
-              src="/icon.svg"
-              alt="Логотип Mynx"
-              width={56}
-              height={56}
-              className="animate-shield drop-shadow-[0_8px_24px_rgba(16,185,129,0.35)]"
-            />
+    <section id="top" className="relative mx-auto max-w-6xl overflow-hidden px-5 pb-24 pt-16 md:pt-24">
+      <MouseParallax className="relative">
+        {/* Параллакс-орбы на фоне */}
+        <div data-depth="30" className="absolute -left-24 top-8 h-64 w-64 rounded-full bg-primary/15 blur-3xl" />
+        <div data-depth="55" className="absolute -right-16 top-1/3 h-72 w-72 rounded-full bg-emerald-400/10 blur-3xl" />
+        <div data-depth="40" className="absolute bottom-0 left-1/3 h-56 w-56 rounded-full bg-primary/10 blur-3xl" />
+
+        <div className="glow left-1/2 top-0 h-96 w-[42rem] -translate-x-1/2" />
+        <div className="relative grid items-center gap-12 lg:grid-cols-2">
+          <div>
+            <div className="mb-6 flex items-center gap-4">
+              <div className="relative h-14 w-14" style={{ transformStyle: "preserve-3d" }}>
+                <span className="orbit orbit-ring" aria-hidden />
+                <span className="orbit orbit-ring--outer" aria-hidden />
+                <span className="orbit orbit-dot" aria-hidden />
+                <span className="orbit orbit-dot--outer" aria-hidden />
+                <Image
+                  src="/icon.svg"
+                  alt="Логотип Mynx"
+                  width={56}
+                  height={56}
+                  className="animate-shield drop-shadow-[0_8px_24px_rgba(16,185,129,0.35)]"
+                />
+              </div>
             <div className="flex flex-wrap gap-2">
               {badges.map((b) => (
                 <span key={b} className="glass rounded-full px-3 py-1 text-xs font-medium text-primary">
@@ -69,6 +82,8 @@ export default function Hero() {
           </Tilt>
         </div>
       </div>
+        <div className="grid-floor" aria-hidden />
+      </MouseParallax>
     </section>
   );
 }

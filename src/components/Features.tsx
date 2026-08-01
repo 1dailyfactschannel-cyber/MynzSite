@@ -90,9 +90,19 @@ export default function Features() {
       <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {features.map((f) => (
           <Tilt key={f.title} max={5} scale={1.02} glare className="h-full rounded-glass">
-            <div className="glass h-full p-5 transition hover:border-primary/30">
-              <f.icon className="h-6 w-6 text-primary" strokeWidth={1.75} />
-              <h3 className="mt-4 font-semibold">{f.title}</h3>
+            <div
+              className="glass h-full p-5 transition hover:border-primary/30"
+              style={{ transformStyle: "preserve-3d" }}
+            >
+              <div style={{ transform: "translateZ(26px)" }}>
+                <f.icon
+                  className="h-6 w-6 text-primary drop-shadow-[0_4px_12px_rgba(16,185,129,0.45)]"
+                  strokeWidth={1.75}
+                />
+              </div>
+              <h3 className="mt-4 font-semibold" style={{ transform: "translateZ(14px)" }}>
+                {f.title}
+              </h3>
               <p className="mt-2 text-sm leading-relaxed text-muted">{f.text}</p>
             </div>
           </Tilt>
