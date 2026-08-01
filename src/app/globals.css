@@ -1,0 +1,124 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: linear-gradient(160deg, #0a0a0f 0%, #111827 50%, #0f172a 100%);
+  background-attachment: fixed;
+  color: #ffffff;
+  -webkit-font-smoothing: antialiased;
+}
+
+@layer components {
+  .glass {
+    @apply rounded-glass border border-white/10 bg-white/[0.04] shadow-xl shadow-black/20;
+    backdrop-filter: blur(20px) saturate(1.5);
+    -webkit-backdrop-filter: blur(20px) saturate(1.5);
+  }
+
+  .glass-strong {
+    @apply rounded-glass border border-white/10 bg-white/[0.06] shadow-2xl shadow-black/30;
+    backdrop-filter: blur(24px) saturate(1.5);
+    -webkit-backdrop-filter: blur(24px) saturate(1.5);
+  }
+
+  .text-gradient {
+    @apply bg-gradient-to-r from-primary to-emerald-300 bg-clip-text text-transparent;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-glass bg-gradient-to-r from-primary to-primary-dark px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-primary/25 transition hover:brightness-110 focus:outline-none focus:ring-2 focus:ring-primary/60;
+  }
+
+  .glow {
+    position: absolute;
+    border-radius: 9999px;
+    background: radial-gradient(circle, rgba(16, 185, 129, 0.18) 0%, transparent 70%);
+    filter: blur(40px);
+    pointer-events: none;
+  }
+}
+
+/* --- 3D / motion --- */
+
+@keyframes float-y {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-12px);
+  }
+}
+
+@keyframes shield-sway {
+  0%,
+  100% {
+    transform: perspective(600px) rotateY(-14deg) rotateX(4deg);
+  }
+  50% {
+    transform: perspective(600px) rotateY(14deg) rotateX(-4deg);
+  }
+}
+
+.animate-float {
+  animation: float-y 6s ease-in-out infinite;
+}
+
+.animate-shield {
+  animation: shield-sway 7s ease-in-out infinite;
+}
+
+.tilt-glare {
+  position: relative;
+  overflow: hidden;
+}
+
+.tilt-glare-spot {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  background: radial-gradient(
+    circle at var(--gx, 50%) var(--gy, 50%),
+    rgba(255, 255, 255, 0.12) 0%,
+    transparent 45%
+  );
+}
+
+.tilt-glare:hover .tilt-glare-spot {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-float,
+  .animate-shield {
+    animation: none;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+details.faq summary::-webkit-details-marker {
+  display: none;
+}
+
+details.faq summary .faq-chevron {
+  transition: transform 0.2s ease;
+}
+
+details.faq[open] summary .faq-chevron {
+  transform: rotate(180deg);
+}
