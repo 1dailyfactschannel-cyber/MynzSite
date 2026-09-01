@@ -7,7 +7,7 @@ import MouseParallax from "./MouseParallax";
 const badges = ["100% офлайн", "Без подписки", "Windows"];
 
 const chips = [
-  { text: "Буфер обмена очищен", className: "-top-9 right-2 md:-right-6", depth: 60, delay: "0s" },
+  { text: "Буфер очищен", className: "-top-9 right-2 md:-right-2", depth: 60, delay: "0s" },
   { text: "Резервная копия создана", className: "right-full top-1/4 mr-4 hidden md:block", depth: 40, delay: "1.2s" },
   { text: "Security Score: 92", className: "-bottom-9 right-4", depth: 80, delay: "2.1s" },
 ];
